@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce_backend.Models
 {
-    public class Address
+    public class Address : BaseEntity
     {
         public string Street { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;

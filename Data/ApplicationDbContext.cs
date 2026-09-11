@@ -10,6 +10,12 @@ namespace Ecommerce_backend.Data
         }
       
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+      
+        }
+
         public DbSet<Product> Product { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Address> Address { get; set; }
