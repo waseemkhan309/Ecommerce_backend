@@ -1,4 +1,6 @@
 
+using Ecommerce_backend.Data;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 
@@ -16,6 +18,10 @@ namespace Ecommerce_backend
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+
+            // register the database context        
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDatabaseString")));
 
             var app = builder.Build();
 
