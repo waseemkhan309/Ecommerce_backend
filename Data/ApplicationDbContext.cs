@@ -13,6 +13,12 @@ namespace Ecommerce_backend.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Seller>()
+                .HasOne(s => s.Address)
+                .WithOne(a => a.Seller)
+                .HasForeignKey<Seller>(s => s.AddressId)
+                .OnDelete(DeleteBehavior.Cascade);
       
         }
 

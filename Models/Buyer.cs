@@ -11,7 +11,6 @@ namespace Ecommerce_backend.Models
         public bool IsEmailVerified { get; set; } = false;
         public bool IsPhoneNumberVerified { get; set; } = false;
         public string PasswordHash { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
     }
 }

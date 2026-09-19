@@ -8,5 +8,7 @@
         public string PostalCode { get; set; } = string.Empty;
         public string Area { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
+
+        public Seller? Seller { get; set; } 
     }
 }
