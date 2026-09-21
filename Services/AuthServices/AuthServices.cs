@@ -1,19 +1,28 @@
 ﻿using Ecommerce_backend.DTOs.AuthDTOs;
 using Ecommerce_backend.Models;
+using Ecommerce_backend.Repositories.AuthRepository;
 using Ecommerce_backend.Services.PasswordHash;
+using Ecommerce_backend.Services.TokenService;
 using Ecommerce_backend.UnitOfWork.RegisterUserUOW;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace Ecommerce_backend.Services.AuthServices
 {
     public class AuthServices(
               IPasswordHash passwordHash,
-              IRegisterUserUOW registerUserUOW
+              IRegisterUserUOW registerUserUOW,
+              IAuthRepository authRepository,
+              ITokenService tokenService
     ) : IAuthServices
     {
 
-        private IPasswordHash _passwordHash = passwordHash;
+        private readonly IPasswordHash _passwordHash = passwordHash;
         private readonly IRegisterUserUOW _registerUserUOW = registerUserUOW;
+        private readonly IAuthRepository _authRepository = authRepository;
+        private readonly ITokenService _tokenServices = tokenService;
+
+
 
         public async Task<RegisterUserResponseDto> RegisterSellerService(RegisterSellerRequestDto sellerRequest)
         {
@@ -85,5 +94,42 @@ namespace Ecommerce_backend.Services.AuthServices
             };
 
         }
+
+
+        // login seller user
+        public async Task<SellerUserLoginResponse> LoginSellerService(SellerUserLoginRequest sellerUserLoginRequest)
+        {
+            try
+            {
+                // find the user againts email from database
+                Seller? sellerData = await _authRepository.getSellerByEmail(sellerUserLoginRequest.Email);
+
+                // verify both existence AND password in one generic failure path
+                if (sellerData is null || !_passwordHash.VerifyPassword(sellerUserLoginRequest.Password, sellerData.PasswordHash))
+                {
+                    throw new UnauthorizedAccessException("Invalid email or password.");
+                }
+
+                // if exist then create the token
+                var accessTokenString =  _tokenServices.CreateAccessToken(sellerData);
+
+                // return token
+                return new SellerUserLoginResponse
+                {
+                    FirstName = sellerData.FirstName,
+                    LastName = sellerData.LastName,
+                    Email = sellerData.Email,
+                    UserName = sellerData.UserName,
+                    AccessToken = accessTokenString
+                };
+
+
+            }catch(Exception )
+            {
+                throw;
+            }
+        }
+
+      
     }
 }

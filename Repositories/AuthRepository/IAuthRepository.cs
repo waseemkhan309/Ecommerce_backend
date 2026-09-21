@@ -5,6 +5,7 @@ namespace Ecommerce_backend.Repositories.AuthRepository
 {
     public interface IAuthRepository
     {
-        public Task<Seller> RegisterSellerRepository(Seller seller); 
+        public Task<Seller> RegisterSellerRepository(Seller seller);
+        public Task<Seller?> getSellerByEmail(string email);
     }
 }
