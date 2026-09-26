@@ -7,8 +7,8 @@
         public string Description { get; set; } = string.Empty;
         
         // Buyer have one Organization, and Organization belongs to one Buyer
-        public Guid BuyerId { get; set; }
-        public Buyer Buyer { get; set; } = new Buyer();
+        public Guid SellerId { get; set; }
+        public Seller seller { get; set; } = new Seller();
 
         // Navigation property for the products associated with the buyer
         public ICollection<Product> Products { get; set; } = new List<Product>();

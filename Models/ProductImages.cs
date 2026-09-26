@@ -2,7 +2,7 @@
 {
     public class ProductImages : BaseEntity
     {
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public Product Product { get; set; } = new Product();
         public string ImageUrl { get; set; } = string.Empty;
     }

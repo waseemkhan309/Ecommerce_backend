@@ -9,6 +9,10 @@
         public string Area { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
 
-        public Seller? Seller { get; set; } 
+        public Guid? BuyerId { get; set; }
+        public Buyer? Buyer { get; set; }
+
+        public Guid? SellerId { get; set; }
+        public Seller? Seller { get; set; }
     }
 }

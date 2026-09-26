@@ -12,5 +12,9 @@ namespace Ecommerce_backend.Models
         public bool IsPhoneNumberVerified { get; set; } = false;
         public string PasswordHash { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
+
+
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
+
     }
 }

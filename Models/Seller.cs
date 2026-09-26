@@ -13,7 +13,8 @@
         public string Country { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
 
-        public Guid AddressId { get; set; }
-        public Address Address { get; set; } = null!;
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
+
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

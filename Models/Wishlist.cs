@@ -2,8 +2,9 @@
 {
     public class Wishlist : BaseEntity
     {
-
-        public int BuyerId { get; set; }
+        public Guid BuyerId { get; set; }
         public Buyer Buyer { get; set; } = new Buyer();
     }
 }
+
+

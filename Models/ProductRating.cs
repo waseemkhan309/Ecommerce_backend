@@ -2,8 +2,8 @@
 {
     public class ProductRating : BaseEntity
     {
-        public int ProductId { get; set; }
-        public int BuyerId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid BuyerId { get; set; }
         public int Rating { get; set; }
         public string Comment { get; set; } = string.Empty;
 
