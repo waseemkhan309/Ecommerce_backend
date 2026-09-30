@@ -1,9 +1,10 @@
-﻿using Ecommerce_backend.Models;
+﻿using Ecommerce_backend.DTOs.TokenDto;
+using Ecommerce_backend.Models;
 
 namespace Ecommerce_backend.Services.TokenService
 {
     public interface ITokenService
     {
-        string CreateAccessToken(Seller seller);
+        string CreateAccessToken(UserClaim userClaim);
     }
 }

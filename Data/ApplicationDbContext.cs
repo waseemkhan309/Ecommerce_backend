@@ -14,12 +14,6 @@ namespace Ecommerce_backend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Seller>()
-                .HasOne(s => s.Address)
-                .WithOne(a => a.Seller)
-                .HasForeignKey<Seller>(s => s.AddressId)
-                .OnDelete(DeleteBehavior.Cascade);
-
         }
 
         public DbSet<Product> Product { get; set; }

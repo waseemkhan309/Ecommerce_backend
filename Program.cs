@@ -18,14 +18,26 @@ namespace Ecommerce_backend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            //builder.Services.AddOpenApi();
+            builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
+
 
             // register the database context        
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDatabaseString")));
+                options.UseNpgsql(builder.Configuration.GetConnectionString("ECommerceDatabaseString"))
+                .UseSeeding((context, _) =>
+                {
+                    DbInitializer.Seed((ApplicationDbContext)context);
+                })
+                .UseAsyncSeeding(async (context, _, cancellationToken) =>
+                {
+                    await DbInitializer.SeedAsync((ApplicationDbContext)context);
+                }));
+
+
 
             builder.Services.AddApplicationServices();
 
@@ -52,6 +64,7 @@ namespace Ecommerce_backend
                     };
                 }
                 );
+
 
 
             var app = builder.Build();

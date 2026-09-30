@@ -2,7 +2,7 @@
 {
     public class Cart : BaseEntity
     {
-        public Guid UserId { get; set; }
+        public Guid BuyerId { get; set; }
         public Buyer Buyer { get; set; } = new Buyer();
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
     }

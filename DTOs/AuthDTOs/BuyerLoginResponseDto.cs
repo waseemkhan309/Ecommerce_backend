@@ -1,6 +1,6 @@
 ﻿namespace Ecommerce_backend.DTOs.AuthDTOs
 {
-    public class SellerUserLoginResponse
+    public class BuyerLoginResponseDto
     {
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

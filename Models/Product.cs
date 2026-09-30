@@ -1,4 +1,5 @@
-﻿namespace Ecommerce_backend.Models
+﻿
+namespace Ecommerce_backend.Models
 {
     public class Product : BaseEntity
     {
@@ -20,8 +21,8 @@
         public Guid SellerId { get; set; }
         public Seller Seller { get; set; } = new Seller();
         
-
         // ProductImages Navigation
         public ICollection<ProductImages> ProductImages { get; set; } = new List<ProductImages>();
+
     }
 }

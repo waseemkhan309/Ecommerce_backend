@@ -8,17 +8,16 @@ namespace Ecommerce_backend.Repositories.AuthRepository
     {
         private readonly ApplicationDbContext _Dbcontext = context;
 
-        public async Task<Seller> RegisterSellerRepository(Seller seller)
+        public async Task RegisterBuyerRepository(Buyer buyer)
         {
-                await _Dbcontext.Seller.AddAsync(seller);
-                return seller;
+             await _Dbcontext.Buyer.AddAsync(buyer);
         }
 
 
         // find User by Email
-        public async Task<Seller?> getSellerByEmail(string email)
+        public async Task<Buyer?> GetUserByEmail(string email)
         {
-            return await _Dbcontext.Seller
+            return await _Dbcontext.Buyer
                          .AsNoTracking()
                          .FirstOrDefaultAsync(e => e.Email == email);
         }

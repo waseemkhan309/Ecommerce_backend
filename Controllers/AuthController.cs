@@ -15,22 +15,22 @@ namespace Ecommerce_backend.Controllers
         private IAuthServices _authServices = authServices;
 
         [HttpPost]
-        [Route("seller")]
-        public async Task<IActionResult> registerSeller([FromBody] RegisterSellerRequestDto registerSellerRequestDto)
+        [Route("buyer/register")]
+        public async Task<IActionResult> registerSeller([FromBody] BuyerRegisterRequestDto registerSellerRequestDto)
         {
            
-            RegisterUserResponseDto  result = await _authServices.RegisterSellerService(registerSellerRequestDto);
-            return Ok(new { message = "Successfully Seller User created.", success = true, data = result });
+            await _authServices.BuyerRegisterService(registerSellerRequestDto);
+            return Ok(new { message = "Successfully Seller User created.", success = true });
 
         }
 
         [HttpPost]
-        [Route("seller/login")]
-        public async Task<IActionResult> loginSeller([FromBody] SellerUserLoginRequest sellerUserLoginRequest)
+        [Route("buyer/login")]
+        public async Task<IActionResult> loginSeller([FromBody] BuyerLoginRequest sellerUserLoginRequest)
         {
             
             // call the service and repository
-            var res = await _authServices.LoginSellerService(sellerUserLoginRequest);
+            var res = await _authServices.BuyerLoginService(sellerUserLoginRequest);
 
             // return login seller response
             return Ok(new

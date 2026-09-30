@@ -6,30 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ecommerce_backend.Migrations
 {
     /// <inheritdoc />
-    public partial class TableCreation : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Address",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Street = table.Column<string>(type: "text", nullable: false),
-                    City = table.Column<string>(type: "text", nullable: false),
-                    State = table.Column<string>(type: "text", nullable: false),
-                    PostalCode = table.Column<string>(type: "text", nullable: false),
-                    Area = table.Column<string>(type: "text", nullable: false),
-                    Country = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Address", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Buyer",
                 columns: table => new
@@ -43,8 +24,8 @@ namespace Ecommerce_backend.Migrations
                     IsEmailVerified = table.Column<bool>(type: "boolean", nullable: false),
                     IsPhoneNumberVerified = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    Country = table.Column<string>(type: "text", nullable: false),
                     Gender = table.Column<string>(type: "text", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -144,7 +125,6 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
                     BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -172,8 +152,7 @@ namespace Ecommerce_backend.Migrations
                     Status = table.Column<int>(type: "integer", nullable: false),
                     ShippingFee = table.Column<double>(type: "double precision", nullable: false),
                     ShippingAddress = table.Column<string>(type: "text", nullable: false),
-                    BuyerId = table.Column<int>(type: "integer", nullable: false),
-                    BuyerId1 = table.Column<Guid>(type: "uuid", nullable: false),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -181,8 +160,8 @@ namespace Ecommerce_backend.Migrations
                 {
                     table.PrimaryKey("PK_Order", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Order_Buyer_BuyerId1",
-                        column: x => x.BuyerId1,
+                        name: "FK_Order_Buyer_BuyerId",
+                        column: x => x.BuyerId,
                         principalTable: "Buyer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -193,8 +172,7 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    BuyerId = table.Column<int>(type: "integer", nullable: false),
-                    BuyerId1 = table.Column<Guid>(type: "uuid", nullable: false),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -202,40 +180,11 @@ namespace Ecommerce_backend.Migrations
                 {
                     table.PrimaryKey("PK_Wishlist", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Wishlist_Buyer_BuyerId1",
-                        column: x => x.BuyerId1,
-                        principalTable: "Buyer",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Organizations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrgainationURL = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrganizationAddressId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Organizations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Organizations_Buyer_BuyerId",
+                        name: "FK_Wishlist_Buyer_BuyerId",
                         column: x => x.BuyerId,
                         principalTable: "Buyer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Organizations_OrgAddress_OrganizationAddressId",
-                        column: x => x.OrganizationAddressId,
-                        principalTable: "OrgAddress",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -266,6 +215,66 @@ namespace Ecommerce_backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Address",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Street = table.Column<string>(type: "text", nullable: false),
+                    City = table.Column<string>(type: "text", nullable: false),
+                    State = table.Column<string>(type: "text", nullable: false),
+                    PostalCode = table.Column<string>(type: "text", nullable: false),
+                    Area = table.Column<string>(type: "text", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: false),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    SellerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Address", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Address_Buyer_BuyerId",
+                        column: x => x.BuyerId,
+                        principalTable: "Buyer",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Address_Seller_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Seller",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Organizations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrgainationURL = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    SellerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrganizationAddressId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Organizations_OrgAddress_OrganizationAddressId",
+                        column: x => x.OrganizationAddressId,
+                        principalTable: "OrgAddress",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Organizations_Seller_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Seller",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -275,8 +284,9 @@ namespace Ecommerce_backend.Migrations
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     Discount = table.Column<decimal>(type: "numeric", nullable: false),
                     Stock = table.Column<int>(type: "integer", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: true),
-                    OrganizationId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrganizationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SellerId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -287,12 +297,20 @@ namespace Ecommerce_backend.Migrations
                         name: "FK_Product_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Product_Organizations_OrganizationId",
                         column: x => x.OrganizationId,
                         principalTable: "Organizations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Product_Seller_SellerId",
+                        column: x => x.SellerId,
+                        principalTable: "Seller",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -300,8 +318,7 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
                     CartId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -317,8 +334,8 @@ namespace Ecommerce_backend.Migrations
                         principalTable: "Cart",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CartItems_Product_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_CartItems_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -329,11 +346,9 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
-                    BuyerId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uuid", nullable: false),
-                    BuyerId1 = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -341,14 +356,14 @@ namespace Ecommerce_backend.Migrations
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Buyer_BuyerId1",
-                        column: x => x.BuyerId1,
+                        name: "FK_Comments_Buyer_BuyerId",
+                        column: x => x.BuyerId,
                         principalTable: "Buyer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_Product_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_Comments_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -359,10 +374,8 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
-                    OrderId1 = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrderId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "numeric", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "numeric", nullable: false),
@@ -373,14 +386,14 @@ namespace Ecommerce_backend.Migrations
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Order_OrderId1",
-                        column: x => x.OrderId1,
+                        name: "FK_OrderItems_Order_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Product_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_OrderItems_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -391,8 +404,7 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     ImageUrl = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -401,8 +413,8 @@ namespace Ecommerce_backend.Migrations
                 {
                     table.PrimaryKey("PK_ProductImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductImages_Product_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_ProductImages_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -413,12 +425,10 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
-                    BuyerId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    BuyerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Rating = table.Column<int>(type: "integer", nullable: false),
                     Comment = table.Column<string>(type: "text", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uuid", nullable: false),
-                    BuyerId1 = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -426,14 +436,14 @@ namespace Ecommerce_backend.Migrations
                 {
                     table.PrimaryKey("PK_Rating", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rating_Buyer_BuyerId1",
-                        column: x => x.BuyerId1,
+                        name: "FK_Rating_Buyer_BuyerId",
+                        column: x => x.BuyerId,
                         principalTable: "Buyer",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Rating_Product_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_Rating_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -444,10 +454,8 @@ namespace Ecommerce_backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    WishlistId = table.Column<int>(type: "integer", nullable: false),
-                    WishlistId1 = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
-                    ProductId1 = table.Column<Guid>(type: "uuid", nullable: false),
+                    WishlistId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -455,18 +463,28 @@ namespace Ecommerce_backend.Migrations
                 {
                     table.PrimaryKey("PK_WishlistItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WishlistItems_Product_ProductId1",
-                        column: x => x.ProductId1,
+                        name: "FK_WishlistItems_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_WishlistItems_Wishlist_WishlistId1",
-                        column: x => x.WishlistId1,
+                        name: "FK_WishlistItems_Wishlist_WishlistId",
+                        column: x => x.WishlistId,
                         principalTable: "Wishlist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Address_BuyerId",
+                table: "Address",
+                column: "BuyerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Address_SellerId",
+                table: "Address",
+                column: "SellerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cart_BuyerId",
@@ -479,44 +497,44 @@ namespace Ecommerce_backend.Migrations
                 column: "CartId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CartItems_ProductId1",
+                name: "IX_CartItems_ProductId",
                 table: "CartItems",
-                column: "ProductId1");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_BuyerId1",
+                name: "IX_Comments_BuyerId",
                 table: "Comments",
-                column: "BuyerId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_ProductId1",
-                table: "Comments",
-                column: "ProductId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Order_BuyerId1",
-                table: "Order",
-                column: "BuyerId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_OrderId1",
-                table: "OrderItems",
-                column: "OrderId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_ProductId1",
-                table: "OrderItems",
-                column: "ProductId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Organizations_BuyerId",
-                table: "Organizations",
                 column: "BuyerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_ProductId",
+                table: "Comments",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_BuyerId",
+                table: "Order",
+                column: "BuyerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_OrderId",
+                table: "OrderItems",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderItems_ProductId",
+                table: "OrderItems",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Organizations_OrganizationAddressId",
                 table: "Organizations",
                 column: "OrganizationAddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Organizations_SellerId",
+                table: "Organizations",
+                column: "SellerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_CategoryId",
@@ -529,19 +547,24 @@ namespace Ecommerce_backend.Migrations
                 column: "OrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductImages_ProductId1",
+                name: "IX_Product_SellerId",
+                table: "Product",
+                column: "SellerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductImages_ProductId",
                 table: "ProductImages",
-                column: "ProductId1");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rating_BuyerId1",
+                name: "IX_Rating_BuyerId",
                 table: "Rating",
-                column: "BuyerId1");
+                column: "BuyerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rating_ProductId1",
+                name: "IX_Rating_ProductId",
                 table: "Rating",
-                column: "ProductId1");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",
@@ -554,19 +577,19 @@ namespace Ecommerce_backend.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Wishlist_BuyerId1",
+                name: "IX_Wishlist_BuyerId",
                 table: "Wishlist",
-                column: "BuyerId1");
+                column: "BuyerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WishlistItems_ProductId1",
+                name: "IX_WishlistItems_ProductId",
                 table: "WishlistItems",
-                column: "ProductId1");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WishlistItems_WishlistId1",
+                name: "IX_WishlistItems_WishlistId",
                 table: "WishlistItems",
-                column: "WishlistId1");
+                column: "WishlistId");
         }
 
         /// <inheritdoc />
@@ -592,9 +615,6 @@ namespace Ecommerce_backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "RolePermissions");
-
-            migrationBuilder.DropTable(
-                name: "Seller");
 
             migrationBuilder.DropTable(
                 name: "WishlistItems");
@@ -628,6 +648,9 @@ namespace Ecommerce_backend.Migrations
 
             migrationBuilder.DropTable(
                 name: "OrgAddress");
+
+            migrationBuilder.DropTable(
+                name: "Seller");
         }
     }
 }

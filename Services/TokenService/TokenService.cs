@@ -1,4 +1,5 @@
-﻿using Ecommerce_backend.Models;
+﻿using Ecommerce_backend.DTOs.TokenDto;
+using Ecommerce_backend.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,7 +14,7 @@ namespace Ecommerce_backend.Services.TokenService
     {
         private readonly IConfiguration _configuration = configuration;
 
-        public string CreateAccessToken(Seller seller)
+        public string CreateAccessToken(UserClaim userClaim)
         {
             // configurations from appsettings
             var jwtKey = _configuration["Jwt:Key"] ??  throw new InvalidOperationException("Jwt:Key is not configured.");
@@ -25,10 +26,10 @@ namespace Ecommerce_backend.Services.TokenService
             // claims
             var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, seller.Id.ToString()),
-                new(JwtRegisteredClaimNames.Email, seller.Email),
-                new(ClaimTypes.Name, seller.UserName),
-                new(ClaimTypes.Role, "Seller"),
+                new(JwtRegisteredClaimNames.Sub, userClaim.Id.ToString()),
+                new(JwtRegisteredClaimNames.Email, userClaim.Email),
+                new(ClaimTypes.Name, userClaim.Username),
+                new(ClaimTypes.Role, userClaim.Role),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
@@ -44,9 +45,6 @@ namespace Ecommerce_backend.Services.TokenService
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-
-
-
         }
     }
 }
