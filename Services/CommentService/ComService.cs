@@ -26,11 +26,11 @@ namespace Ecommerce_backend.Services.CommentService
                 UpdatedAt = DateTime.UtcNow
             };
             
-            await _unitOfWork.Comments.CreateCommentUOW(commentObj);
+            await _comRepository.CreateCommentUOW(commentObj);
 
             await _unitOfWork.SaveChangesAsync();
 
-            var response = await _unitOfWork.Comments.GetCreatedCommentAsync(commentObj.Id);
+            var response = await _comRepository.GetCreatedCommentAsync(commentObj.Id);
 
             if(response == null)
             {
