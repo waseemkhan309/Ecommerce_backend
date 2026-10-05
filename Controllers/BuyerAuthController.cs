@@ -8,7 +8,7 @@ namespace Ecommerce_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(
+    public class BuyerAuthController(
         IAuthServices authServices
     ) : ControllerBase
     {

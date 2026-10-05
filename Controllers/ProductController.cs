@@ -6,11 +6,12 @@ namespace Ecommerce_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Buyer")]
     public class ProductController(
         IProductService productService
         ) : ControllerBase
     {
+
         private IProductService _productService = productService;
 
         [HttpGet]
@@ -31,5 +32,7 @@ namespace Ecommerce_backend.Controllers
                 throw ex;
             }
         }
+    
+    
     }
 }

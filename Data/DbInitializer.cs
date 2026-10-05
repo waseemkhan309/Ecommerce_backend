@@ -69,7 +69,7 @@ namespace Ecommerce_backend.Data
             context.Category.AddRange(electronics, fashion, home);
 
             // ---------- Sellers ----------
-            var sellerHasher = new PasswordHasher<Seller>();
+
             var seller1 = new Seller
             {
                 Id = Guid.NewGuid(),
@@ -106,7 +106,7 @@ namespace Ecommerce_backend.Data
             context.Seller.AddRange(seller1, seller2);
 
             // ---------- Buyers ----------
-            var buyerHasher = new PasswordHasher<Buyer>();
+
             var buyer1 = new Buyer
             {
                 Id = Guid.NewGuid(),
@@ -140,7 +140,6 @@ namespace Ecommerce_backend.Data
                 UpdatedAt = now
             };
             buyer2.PasswordHash = BCrypt.Net.BCrypt.HashPassword("Buyer@123");
-            //buyerHasher.HashPassword(buyer2, "Buyer@123");
             context.Buyer.AddRange(buyer1, buyer2);
 
             // ---------- Addresses (either BuyerId or SellerId) ----------
@@ -164,6 +163,7 @@ namespace Ecommerce_backend.Data
                 CreatedAt = now,
                 UpdatedAt = now
             };
+
             var org2 = new Organization
             {
                 Id = Guid.NewGuid(),
@@ -221,6 +221,7 @@ namespace Ecommerce_backend.Data
                 new ProductRating { Id = Guid.NewGuid(), ProductId = phone.Id, BuyerId = buyer1.Id, Rating = 5, Comment = "Excellent phone!", CreatedAt = now, UpdatedAt = now },
                 new ProductRating { Id = Guid.NewGuid(), ProductId = shirt.Id, BuyerId = buyer2.Id, Rating = 4, Comment = "Good quality for the price.", CreatedAt = now, UpdatedAt = now }
             );
+
             context.Comments.AddRange(
                 new Comment { Id = Guid.NewGuid(), ProductId = phone.Id, BuyerId = buyer2.Id, Content = "Does it support fast charging?", CreatedAt = now, UpdatedAt = now },
                 new Comment { Id = Guid.NewGuid(), ProductId = laptop.Id, BuyerId = buyer1.Id, Content = "Is the RAM upgradeable?", CreatedAt = now, UpdatedAt = now }
@@ -257,6 +258,7 @@ namespace Ecommerce_backend.Data
                 UpdatedAt = now
             };
             context.Order.Add(order);
+
             context.OrderItems.Add(new OrderItems
             {
                 Id = Guid.NewGuid(),

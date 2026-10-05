@@ -1,6 +1,6 @@
 ﻿using Ecommerce_backend.Data;
+using Ecommerce_backend.DTOs.CategoryDTOs;
 using Ecommerce_backend.DTOs.ProductDTOs;
-using Ecommerce_backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce_backend.Repositories.ProductRepository

@@ -114,7 +114,7 @@ namespace Ecommerce_backend.Services.AuthServices
                     Id = buyerRecord.Id,
                     Username = buyerRecord.UserName,
                     Email = buyerRecord.Email,
-                    Role = "Buyer"
+                    Role = "Seller"
                 };
 
                 var accessTokenString =  _tokenServices.CreateAccessToken(userClaim);

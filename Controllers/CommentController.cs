@@ -7,7 +7,7 @@ namespace Ecommerce_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Buyer")]
     public class CommentController(
         IComService comService
         ) : ControllerBase
