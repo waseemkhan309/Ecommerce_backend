@@ -58,10 +58,12 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
 
         }
 
-        public async Task<Guid> SellerRegisterRepo(SellerRegisterRequestDto request)
+        
+        public async Task SellerRegisterRepo(Seller seller)
         {
-            
+            await _dbContext.Seller.AddAsync(seller);
         }
+
     }
 }
 

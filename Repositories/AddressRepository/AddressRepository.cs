@@ -11,10 +11,9 @@ namespace Ecommerce_backend.Repositories.AddressRepository
     {
         private ApplicationDbContext _DbContext = applicationDbContext;
 
-        public async Task<Address> AddUserAddress(Address address)
+        public async Task AddUserAddress(Address address)
         {
             await _DbContext.Address.AddAsync(address);
-            return address;
         }
     }
 }

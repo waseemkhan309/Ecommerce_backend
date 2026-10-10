@@ -1,4 +1,5 @@
-﻿namespace Ecommerce_backend.DTOs.AuthDTOs
+﻿
+namespace Ecommerce_backend.DTOs.AuthDTOs
 {
     public class BuyerRegisterRequestDto
     {
@@ -11,11 +12,20 @@
         public bool IsPhoneNumberVerified { get; set; } = false;
         public string Password { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
+
+
+        // Address
         public string Street { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public string State { get; set; } = string.Empty;
         public string PostalCode { get; set; } = string.Empty;
         public string Area { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
+
+
+        // Organization
+        public string OrgainationURL { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }

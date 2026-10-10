@@ -2,6 +2,7 @@
 using Ecommerce_backend.Repositories.AuthRepository;
 using Ecommerce_backend.Repositories.CommentRepository;
 using Ecommerce_backend.Repositories.ProductRepository;
+using Ecommerce_backend.Repositories.SellerAuthRepository;
 using Ecommerce_backend.Services.AuthServices;
 using Ecommerce_backend.Services.CommentService;
 using Ecommerce_backend.Services.PasswordHash;
@@ -31,6 +32,8 @@ namespace Ecommerce_backend.Extensions
             services.AddScoped<IComService, ComService>();
             services.AddScoped<IComRepository, ComRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWorkService >();
+            services.AddScoped<ISellerAuthRepo, SellerAuthRepo>();
+            
 
 
             return services;
