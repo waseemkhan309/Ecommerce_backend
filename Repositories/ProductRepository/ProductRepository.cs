@@ -14,11 +14,11 @@ namespace Ecommerce_backend.Repositories.ProductRepository
 
 
         // Function members 
-        public async Task<List<ProductDto>> ProductListRepo()
+        public async Task<List<ProductDto?>> ProductListRepo()
         {
             return await _dbContext.Product
                 .AsNoTracking()
-                .Select(p => new ProductDto(
+                .Select(p => (ProductDto?)new ProductDto(
                     p.Id,
                     p.Name,
                     p.Description,

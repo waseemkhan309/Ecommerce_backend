@@ -5,6 +5,6 @@ namespace Ecommerce_backend.Services.AuthServices
     public interface IAuthServices
     {
         public Task BuyerRegisterService(BuyerRegisterRequestDto request);
-        public Task<BuyerLoginResponseDto> BuyerLoginService(BuyerLoginRequest sellerUserLoginRequest);
+        public Task<BuyerLoginResponseDto> BuyerLoginService(BuyerLoginRequest buyerLoginRequest);
     }
 }

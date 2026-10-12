@@ -16,7 +16,7 @@ namespace Ecommerce_backend.Services.AuthServices
               IRegisterUserUOW registerUserUOW,
               IAuthRepository authRepository,
               ITokenService tokenService,
-              IUnitOfWork unitOfWork
+              IUnitOfWork unitOfWork                
     ) : IAuthServices
     {
 
@@ -107,14 +107,12 @@ namespace Ecommerce_backend.Services.AuthServices
                 }
 
                 // if exist then create the token
-                // PENDING TASK ---- make it generic later because generic for buyer and seller
-
                 var userClaim = new UserClaim
                 {
                     Id = buyerRecord.Id,
                     Username = buyerRecord.UserName,
                     Email = buyerRecord.Email,
-                    Role = "Seller"
+                    Role = "Buyer"
                 };
 
                 var accessTokenString =  _tokenServices.CreateAccessToken(userClaim);

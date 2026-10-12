@@ -5,9 +5,9 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
 {
     public interface ISellerAuthRepo
     {
-        Task SellerRegisterRepo(Seller seller);
-        Task<Seller> SellerGetByEmail(string email);
-        Task<Seller> SellerGetById(Guid id);
+        Task<Guid> SellerRegisterRepo(Seller seller);
+        Task<Seller?> SellerGetByEmail(string email);
+        Task<Seller?> SellerGetById(Guid id);
         //Task<SellerLoginResponseDto> SellerLoginRepo(SellerLoginRequestDto request);
     }
 }

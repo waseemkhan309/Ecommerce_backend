@@ -336,12 +336,9 @@ namespace Ecommerce_backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("OrgainationURL")
+                    b.Property<string>("OrganizationURL")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid?>("OrganizationAddressId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("SellerId")
                         .HasColumnType("uuid");
@@ -350,8 +347,6 @@ namespace Ecommerce_backend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrganizationAddressId");
 
                     b.HasIndex("SellerId");
 
@@ -364,37 +359,34 @@ namespace Ecommerce_backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PostalCode")
+                    b.Property<string>("OrgAddress")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("State")
+                    b.Property<string>("OrgCity")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Street")
+                    b.Property<string>("OrgCountry")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("OrgState")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OrganizationId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("OrgAddress");
                 });
@@ -689,11 +681,13 @@ namespace Ecommerce_backend.Migrations
                 {
                     b.HasOne("Ecommerce_backend.Models.Buyer", "Buyer")
                         .WithMany("Addresses")
-                        .HasForeignKey("BuyerId");
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Ecommerce_backend.Models.Seller", "Seller")
                         .WithMany("Addresses")
-                        .HasForeignKey("SellerId");
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Buyer");
 
@@ -729,7 +723,7 @@ namespace Ecommerce_backend.Migrations
             modelBuilder.Entity("Ecommerce_backend.Models.Comment", b =>
                 {
                     b.HasOne("Ecommerce_backend.Models.Buyer", "Buyer")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("BuyerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -777,17 +771,24 @@ namespace Ecommerce_backend.Migrations
 
             modelBuilder.Entity("Ecommerce_backend.Models.Organization", b =>
                 {
-                    b.HasOne("Ecommerce_backend.Models.OrganizationAddress", null)
-                        .WithMany("OrganizationAddresses")
-                        .HasForeignKey("OrganizationAddressId");
-
-                    b.HasOne("Ecommerce_backend.Models.Seller", "seller")
-                        .WithMany()
+                    b.HasOne("Ecommerce_backend.Models.Seller", "Seller")
+                        .WithMany("Organizations")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("seller");
+                    b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("Ecommerce_backend.Models.OrganizationAddress", b =>
+                {
+                    b.HasOne("Ecommerce_backend.Models.Organization", "Organization")
+                        .WithMany("OrganizationAddresses")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organization");
                 });
 
             modelBuilder.Entity("Ecommerce_backend.Models.Product", b =>
@@ -805,7 +806,7 @@ namespace Ecommerce_backend.Migrations
                         .IsRequired();
 
                     b.HasOne("Ecommerce_backend.Models.Seller", "Seller")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -899,6 +900,8 @@ namespace Ecommerce_backend.Migrations
             modelBuilder.Entity("Ecommerce_backend.Models.Buyer", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Ecommerce_backend.Models.Cart", b =>
@@ -913,12 +916,9 @@ namespace Ecommerce_backend.Migrations
 
             modelBuilder.Entity("Ecommerce_backend.Models.Organization", b =>
                 {
-                    b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Ecommerce_backend.Models.OrganizationAddress", b =>
-                {
                     b.Navigation("OrganizationAddresses");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Ecommerce_backend.Models.Product", b =>
@@ -930,7 +930,7 @@ namespace Ecommerce_backend.Migrations
                 {
                     b.Navigation("Addresses");
 
-                    b.Navigation("Products");
+                    b.Navigation("Organizations");
                 });
 #pragma warning restore 612, 618
         }

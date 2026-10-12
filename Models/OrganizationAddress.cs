@@ -2,13 +2,12 @@
 {
     public class OrganizationAddress : BaseEntity
     {
-        public string Street { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
-        public string PostalCode { get; set; } = string.Empty;  
-        public string Area { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
+        public string OrgAddress { get; set; } = string.Empty;
+        public string OrgCity { get; set; } = string.Empty;
+        public string OrgState { get; set; } = string.Empty;
+        public string OrgCountry { get; set; } = string.Empty;
 
-        public ICollection<Organization> OrganizationAddresses { get; set; } = new List<Organization>();
+        public Guid OrganizationId { get; set; }
+        public Organization Organization { get; set; } = new Organization();
     }
 }

@@ -156,10 +156,10 @@ namespace Ecommerce_backend.Data
             {
                 Id = Guid.NewGuid(),
                 Name = "TechHub Pvt Ltd",
-                OrgainationURL = "https://techhub.example.com",
+                OrganizationURL = "https://techhub.example.com",
                 Description = "Consumer electronics retailer",
                 SellerId = seller1.Id,
-                seller = null!,
+                Seller = null!,
                 CreatedAt = now,
                 UpdatedAt = now
             };
@@ -168,10 +168,10 @@ namespace Ecommerce_backend.Data
             {
                 Id = Guid.NewGuid(),
                 Name = "Style Store",
-                OrgainationURL = "https://stylestore.example.com",
+                OrganizationURL = "https://stylestore.example.com",
                 Description = "Fashion and apparel",
                 SellerId = seller2.Id,
-                seller = null!,
+                Seller = null!,
                 CreatedAt = now,
                 UpdatedAt = now
             };

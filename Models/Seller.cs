@@ -15,6 +15,6 @@
 
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
 
-        public ICollection<Organization> Products { get; set; } = new List<Organization>();
+        public ICollection<Organization> Organizations { get; set; } = new List<Organization>();
     }
 }

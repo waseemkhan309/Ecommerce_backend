@@ -29,7 +29,7 @@ namespace Ecommerce_backend.Controllers
                 });
             }catch(Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
     

@@ -12,7 +12,7 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
 
         private readonly ApplicationDbContext _dbContext = dbContext;
 
-        public async Task<Seller> SellerGetByEmail(string email)
+        public async Task<Seller?> SellerGetByEmail(string email)
         {
             return await _dbContext.Seller
                              .Where(s => s.Email == email)
@@ -35,7 +35,7 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
                 
         }
 
-        public async Task<Seller> SellerGetById(Guid id)
+        public async Task<Seller?> SellerGetById(Guid id)
         {
             return await _dbContext.Seller
                              .Where(s => s.Id == id)
@@ -59,9 +59,10 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
         }
 
         
-        public async Task SellerRegisterRepo(Seller seller)
+        public async Task<Guid> SellerRegisterRepo(Seller seller)
         {
             await _dbContext.Seller.AddAsync(seller);
+            return seller.Id;
         }
 
     }

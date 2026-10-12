@@ -6,12 +6,57 @@ namespace Ecommerce_backend.Data
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
+        {}
       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            // buyer --> Address (One-to-Many)
+            modelBuilder.Entity<Buyer>()
+                .HasMany(b => b.Addresses)
+                .WithOne(a => a.Buyer)
+                .HasForeignKey(a => a.BuyerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // seller --> Address (One-to-Many)
+            modelBuilder.Entity<Seller>()
+                .HasMany(s => s.Addresses)
+                .WithOne(a => a.Seller)
+                .HasForeignKey(a => a.SellerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            // buyer --> Comment (One-to-Many)
+            modelBuilder.Entity<Buyer>()
+                .HasMany(b => b.Comments)
+                .WithOne(c => c.Buyer)
+                .HasForeignKey(c => c.BuyerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            // Seller --> Organizations (One-to-Many)
+            modelBuilder.Entity<Seller>()
+                .HasMany(s => s.Organizations)
+                .WithOne(o => o.Seller)
+                .HasForeignKey(o => o.SellerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Organization --> Product (One-to-Many)
+            modelBuilder.Entity<Organization>()
+                .HasMany(o => o.Products)
+                .WithOne(p => p.Organization)
+                .HasForeignKey(p => p.OrganizationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Organization --> OrganizationAddress (One-to-Many)
+            modelBuilder.Entity<Organization>()
+                .HasMany(or => or.OrganizationAddresses)
+                .WithOne(oa => oa.Organization)
+                .HasForeignKey(oa => oa.OrganizationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
             base.OnModelCreating(modelBuilder);
 
         }
