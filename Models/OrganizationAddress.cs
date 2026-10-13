@@ -8,6 +8,6 @@
         public string OrgCountry { get; set; } = string.Empty;
 
         public Guid OrganizationId { get; set; }
-        public Organization Organization { get; set; } = new Organization();
+        public Organization? Organization { get; set; }
     }
 }

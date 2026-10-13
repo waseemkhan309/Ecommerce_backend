@@ -39,10 +39,7 @@ namespace Ecommerce_backend.Migrations
                 name: "City",
                 table: "OrgAddress");
 
-            migrationBuilder.RenameColumn(
-                name: "OrgainationURL",
-                table: "Organizations",
-                newName: "OrganizationURL");
+          
 
             migrationBuilder.RenameColumn(
                 name: "Street",
@@ -71,29 +68,16 @@ namespace Ecommerce_backend.Migrations
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "CommentId",
-                table: "Comments",
-                type: "uuid",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+         
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "CommentsId",
-                table: "Comments",
-                type: "uuid",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+           
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrgAddress_OrganizationId",
                 table: "OrgAddress",
                 column: "OrganizationId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_CommentsId",
-                table: "Comments",
-                column: "CommentsId");
+         
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Address_Buyer_BuyerId",
@@ -111,13 +95,7 @@ namespace Ecommerce_backend.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Comments_Comments_CommentsId",
-                table: "Comments",
-                column: "CommentsId",
-                principalTable: "Comments",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+        
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrgAddress_Organizations_OrganizationId",
@@ -139,9 +117,7 @@ namespace Ecommerce_backend.Migrations
                 name: "FK_Address_Seller_SellerId",
                 table: "Address");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Comments_Comments_CommentsId",
-                table: "Comments");
+      
 
             migrationBuilder.DropForeignKey(
                 name: "FK_OrgAddress_Organizations_OrganizationId",

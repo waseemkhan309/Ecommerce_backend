@@ -8,7 +8,7 @@
         
         // Buyer have one Organization, and Organization belongs to one Buyer
         public Guid SellerId { get; set; }
-        public Seller Seller { get; set; } = new Seller();
+        public Seller? Seller { get; set; }
 
 
         // Organization have many OrganizationAddress

@@ -4,6 +4,7 @@ using Ecommerce_backend.Models;
 using Ecommerce_backend.Repositories.AddressRepository;
 using Ecommerce_backend.Repositories.OrganizationRepository;
 using Ecommerce_backend.Repositories.SellerAuthRepository;
+using Ecommerce_backend.Services.PasswordHash;
 using Ecommerce_backend.Services.TokenService;
 using Ecommerce_backend.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,8 @@ namespace Ecommerce_backend.Services.SellerAuthService
         IAddressRepository addressRepository,
         IOrganizationRepository organizationRepository,
         ITokenService tokenServices,
-        IUnitOfWork unitOfWork
+        IUnitOfWork unitOfWork,
+        IPasswordHash passwordHash
         ) : ISellerAuthService
     {
 
@@ -26,6 +28,7 @@ namespace Ecommerce_backend.Services.SellerAuthService
         private readonly IOrganizationRepository _organizationRepository = organizationRepository;
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly ITokenService _tokenServices = tokenServices;
+        private readonly IPasswordHash _passwordHash = passwordHash;
 
 
         public async Task<Guid> SellerRegisterService(SellerRegisterRequestDto request)
@@ -45,7 +48,7 @@ namespace Ecommerce_backend.Services.SellerAuthService
             var dateTime = DateTime.UtcNow;
 
             // seller details
-            var sellerDetais = new Seller
+            var seller = new Seller
             {
                 UserName = request.UserName,
                 FirstName = request.FirstName,
@@ -71,7 +74,9 @@ namespace Ecommerce_backend.Services.SellerAuthService
                 Country = request.Country,
                 
                 CreatedAt = dateTime,
-                UpdatedAt = dateTime
+                UpdatedAt = dateTime,
+
+                Seller = seller
             };
 
             // seller organization details
@@ -82,7 +87,9 @@ namespace Ecommerce_backend.Services.SellerAuthService
                 OrganizationURL = request.OrganizationURL,
                 
                 CreatedAt = dateTime,
-                UpdatedAt = dateTime
+                UpdatedAt = dateTime,
+
+                Seller = seller
             };
             // seller organization address details
             var sellerOrganizationAddressDetails = new OrganizationAddress
@@ -94,15 +101,18 @@ namespace Ecommerce_backend.Services.SellerAuthService
                 CreatedAt = dateTime,
                 UpdatedAt = dateTime,
 
+                Organization = sellerOrganizationDetails
+
             };
 
-            var sellerIdReturned = await _sellerAuthRepo.SellerRegisterRepo(sellerDetais);
             await _addressRepository.AddUserAddress(sellerAddressDetails);
             await _organizationRepository.SellerOrganization(sellerOrganizationDetails);
             await _organizationRepository.SellerOrganizationAddress(sellerOrganizationAddressDetails);
+            
 
             try
             {
+                await _sellerAuthRepo.SellerRegisterRepo(seller);
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
@@ -110,9 +120,10 @@ namespace Ecommerce_backend.Services.SellerAuthService
                 Console.WriteLine( ex.InnerException?.Message);
                 Console.WriteLine(ex.ToString());
                 Console.WriteLine(ex.Entries);
+                throw;
             }
 
-            return sellerIdReturned;
+            return seller.Id;
 
         }
 
@@ -128,18 +139,13 @@ namespace Ecommerce_backend.Services.SellerAuthService
             }
 
             var seller = await _sellerAuthRepo.SellerGetByEmail(sellerReq.Email);
-            if (seller == null)
-            {
-                throw new InvalidOperationException("Seller not found.");
-            }
-
 
             // Verify the password
-            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(sellerReq.Password, seller.PasswordHash);
-            if (!isPasswordValid)
+            if (seller is null || !_passwordHash.VerifyPassword(sellerReq.Password , seller.PasswordHash))
             {
-                throw new UnauthorizedAccessException("Invalid password.");
+                throw new UnauthorizedAccessException("Invalid email or password Or User doesn't exist.");
             }
+
 
             var userClaim = new UserClaim
             {

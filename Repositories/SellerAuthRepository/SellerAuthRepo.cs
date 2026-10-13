@@ -9,7 +9,7 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
         ApplicationDbContext dbContext
         ) : ISellerAuthRepo
     {
-
+         
         private readonly ApplicationDbContext _dbContext = dbContext;
 
         public async Task<Seller?> SellerGetByEmail(string email)
@@ -25,6 +25,7 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
                                  Email = s.Email,
                                  PhoneNumber = s.PhoneNumber,
                                  IsEmailVerified = s.IsEmailVerified,
+                                 PasswordHash = s.PasswordHash,
                                  IsPhoneNumberVerified = s.IsPhoneNumberVerified,
                                  Country = s.Country,
                                  Gender = s.Gender,
@@ -59,10 +60,9 @@ namespace Ecommerce_backend.Repositories.SellerAuthRepository
         }
 
         
-        public async Task<Guid> SellerRegisterRepo(Seller seller)
+        public async Task SellerRegisterRepo(Seller seller)
         {
             await _dbContext.Seller.AddAsync(seller);
-            return seller.Id;
         }
 
     }

@@ -51,6 +51,7 @@ namespace Ecommerce_backend.Controllers
                 message = "Seller Successfully registered.",
                 data = sellerLoginResponse
             });
+
         }
 
     }

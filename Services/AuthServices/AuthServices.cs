@@ -95,43 +95,39 @@ namespace Ecommerce_backend.Services.AuthServices
         // login seller user
         public async Task<BuyerLoginResponseDto> BuyerLoginService(BuyerLoginRequest buyerLoginReq)
         {
-            try
+          
+            // find the user againts email from database
+            Buyer? buyerRecord = await _authRepository.GetUserByEmail(buyerLoginReq.Email);
+
+            // verify both existence AND password in one generic failure path
+            if (buyerRecord is null || !_passwordHash.VerifyPassword(buyerLoginReq.Password, buyerRecord.PasswordHash))
             {
-                // find the user againts email from database
-                Buyer? buyerRecord = await _authRepository.GetUserByEmail(buyerLoginReq.Email);
-
-                // verify both existence AND password in one generic failure path
-                if (buyerRecord is null || !_passwordHash.VerifyPassword(buyerLoginReq.Password, buyerRecord.PasswordHash))
-                {
-                    throw new UnauthorizedAccessException("Invalid email or password Or User doesn't exist.");
-                }
-
-                // if exist then create the token
-                var userClaim = new UserClaim
-                {
-                    Id = buyerRecord.Id,
-                    Username = buyerRecord.UserName,
-                    Email = buyerRecord.Email,
-                    Role = "Buyer"
-                };
-
-                var accessTokenString =  _tokenServices.CreateAccessToken(userClaim);
-
-                // return token
-                return new BuyerLoginResponseDto
-                {
-                    FirstName = buyerRecord.FirstName,
-                    LastName = buyerRecord.LastName,
-                    Email = buyerRecord.Email,
-                    UserName = buyerRecord.UserName,
-                    AccessToken = accessTokenString
-                };
-
-
-            }catch(Exception )
-            {
-                throw;
+                throw new UnauthorizedAccessException("Invalid email or password Or User doesn't exist.");
             }
+
+            // if exist then create the token
+            var userClaim = new UserClaim
+            {
+                Id = buyerRecord.Id,
+                Username = buyerRecord.UserName,
+                Email = buyerRecord.Email,
+                Role = "Buyer"
+            };
+
+            var accessTokenString =  _tokenServices.CreateAccessToken(userClaim);
+
+            // return token
+            return new BuyerLoginResponseDto
+            {
+                FirstName = buyerRecord.FirstName,
+                LastName = buyerRecord.LastName,
+                Email = buyerRecord.Email,
+                UserName = buyerRecord.UserName,
+                AccessToken = accessTokenString
+            };
+
+
+           
         }
 
       
